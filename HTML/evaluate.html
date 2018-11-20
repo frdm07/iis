@@ -6,17 +6,18 @@
         <title>評価入力画面</title>
     </head>
     <body>
-        <h1>加藤 重治 さんを評価します</h1>
-        <form method="POST" action="result.html">
-        <table>
-            <tr><td>企業名</td><td>：<input type="text" name="name"></td></tr>
-            <tr><td>担当者名</td><td>：<input type="text" name="name"></td></tr>
-            <tr><td>担当者電話番号</td><td>：<input type="text" name="tel"></td></tr>
-            <tr><td>担当者メールアドレス</td><td>：<input type="text" name="email"></td></tr>
-            <tr><td>ログインID</td><td>：<input type="text" name="loginId"></td></tr>
-            <tr><td>パスワード</td><td>：<input type="password" name="pass"></td></tr>
-            <tr><td><input type="submit" value="登録する" class="regiButton"></td></tr>      
-        </table>
+        <h3>加藤 重治 さんを評価します</h3>
+        <form type="POST" action="completeEva.html">
+        <table><tr> <td><select name="evaluate">
+                        <option value="">選択してください</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </td>
+                    <td><input type="submit" value="確定" class="regiButton"></td>
+            </select>
         </form>
     </body>
 </html>
