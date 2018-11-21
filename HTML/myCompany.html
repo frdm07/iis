@@ -1,0 +1,52 @@
+<!Doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="../CSS/mypage.css">
+        <title>マイページ</title>
+    </head>
+    <body>
+        <header>
+            <a href="">ログアウト</a>
+            <h3>マイページ</h3>
+        </header>
+        <div>
+            <h2>依頼状況</h2>
+            <table border="1">
+                <tr>
+                    <th>発行日</th>
+                    <th>有効期限</th>
+                    <th>依頼先</th>
+                    <th>連絡先</th>
+                    <th>メモ</th>
+                    <th>状態</th>
+                    <th>完了情報</th>
+                </tr>
+            </table>
+        </div>
+        <form method="POST" action="findUser.html">
+            <table>
+                <tr>
+                    <td colspan="2">講師を検索</td>
+                </tr>
+                <tr>
+                    <td>要求スキル</td>
+                    <td>
+                        <select name="example" multiple>
+                            <option value="サンプル1">サンプル1</option>
+                            <option value="サンプル2">サンプル2</option>
+                            <option value="サンプル3">サンプル3</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>依頼日程</td>
+                    <td><input type="date" name="str_date"> 〜 <input type="date" name="end_date"></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><input type="submit" value="検索"></td>
+                </tr>
+            </table>
+        </form>
+    </body>
+</html>
