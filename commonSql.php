@@ -9,6 +9,7 @@ function connectDB(){
         $pdo = new PDO($dsn, $user, $password);
         $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        return $pdo;
         $pdo = NULL;
     } catch (Exception $e) {
         echo '<span class="error">エラーがありました</span><br>';
@@ -19,66 +20,69 @@ function connectDB(){
 
 //SQL実行
 function exeSQL($stm){
-//    $sql = $insql;
-//    $stm = $pdo->prepare($sql);
-    $stm->execute();
-    $result = $stm->fetchAll(PDO::FETCH_ASSOC);
-    return $result;
+    try{
+        $stm->execute();
+        $result = $stm->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    } catch (Exception $e) {
+        echo '<span class="error">SQLの実行でエラーがありました</span><br>';
+        echo $e->getMessage();
+        exit();
+    }
 }
 
 // 名前、スキル（講師マイページ）
-function nameAndSkill($ID){
+function nameAndSkill($ID, $pdo){
     $sql = "SELECT ins.name, sk.lang FROM instructor ins
     INNER JOIN (SELECT skill_user.u_id, skill.lang FROM skill_user s_u
     INNER JOIN skill skl ON s_u.s_id = skill.id) sk
     ON ins.id = sk.u_id WHERE ins.loginId = :id;";
-    $stm = $pdo->prepare($sql);
-    $stm->bindValue(':id',$ID,PDO::PARAM_INT);
-    $result = exeSQL($stm);
-    return $result;
+    try{
+        $stm = $pdo->prepare($sql);
+        $stm->bindValue(':id',$ID,PDO::PARAM_INT);
+        $result = exeSQL($stm);
+        return $result;
+    } catch (Exception $e) {
+        echo '<span class="error">SQLの構文にエラーがありました</span><br>';
+        echo $e->getMessage();
+        exit();
+    }
 }
 
 // 平均評価（講師マイページ）
-function getAverage($ID){
+function getAverage($ID, $pdo){
     $sql = "SELECT avg(evalution.results) FROM instructor ins
     INNER JOIN evalution eva ON ins.id = eva.u_id
-<<<<<<< HEAD
-    GROUP BY ins.id WHERE ins.id = {$ID};";
-    exeSQL($sql);
-=======
     WHERE eva.u_id = :id
     GROUP BY ins.id;";
-    $stm = $pdo->prepare($sql);
-    $stm->bindValue(':id',$ID,PDO::PARAM_INT);
-    $result = exeSQL($stm);
-    return $result;
->>>>>>> 2138d115b49c2a2d165f6c745b852fba07aa4775
+    try{
+        $stm = $pdo->prepare($sql);
+        $stm->bindValue(':id',$ID,PDO::PARAM_INT);
+        $result = exeSQL($stm);
+        return $result;
+    } catch (Exception $e) {
+        echo '<span class="error">SQLの構文にエラーがありました</span><br>';
+        echo $e->getMessage();
+        exit();
+    }
 }
 
 // 言語選択プルダウンリスト
-function getPullDownList(){
+function getPullDownList($pdo){
     $sql = "SELECT id,lang FROM skill;";
-    $result = exeSQL($sql);
-    return $result;
+    try{
+        $stm = $pdo->prepare($sql);
+        $result = exeSQL($stm);
+        return $result;
+    } catch (Exception $e) {
+        echo '<span class="error">SQLの構文にエラーがありました</span><br>';
+        echo $e->getMessage();
+        exit();
+    }
 }
 
-// 両マイページ　依頼表示
-function displayOffer_Ins($ID){
-    $sql = "SELECT of.order_date, of.limit_date, ins.name, of.contents, 
-    app.value, comp.value, com.name, skill.lang 
-    FROM offer of
-    INNER JOIN instructor ins ON of.u_id = ins.id
-    INNER JOIN approval app ON of.app_id = app.id
-    INNER JOIN complete comp ON of.complete_id = comp.id
-    INNER JOIN company com ON of.c_id = com.id
-<<<<<<< HEAD
-    INNER JOIN skill sk ON of.s_id = sk.id
-    WHERE of.u_id = {$ID}";
-    exeSQL($sql);
-}
-
-// 両マイページ　依頼表示
-function displayOffer_Com($ID){
+// 講師マイページ　依頼表示
+function displayOffer_Ins($ID, $pdo){
     $sql = "SELECT of.order_date, of.limit_date, ins.name, of.contents, 
     app.value, comp.value, com.name, skill.lang 
     FROM offer of
@@ -87,27 +91,57 @@ function displayOffer_Com($ID){
     INNER JOIN complete comp ON of.complete_id = comp.id
     INNER JOIN company com ON of.c_id = com.id
     INNER JOIN skill sk ON of.s_id = sk.id
-    WHERE of.c_id = {$ID}";
-    exeSQL($sql);
-=======
-    INNER JOIN skill sk ON of.s_id = sk.id;";
-    $result = exeSQL($sql);
+    WHERE u_id = :id;"; 
+    try{
+        $stm = $pdo->prepare($sql);
+        $stm->bindValue(':id',$ID,PDO::PARAM_INT);
+        $result = exeSQL($stm);
+        return $result;
+    } catch (Exception $e) {
+        echo '<span class="error">SQLの構文にエラーがありました</span><br>';
+        echo $e->getMessage();
+        exit();
+    }
+}
+
+// 企業マイページ　依頼表示
+function displayOffer_Com($ID, $pdo){
+    $sql = "SELECT of.order_date, of.limit_date, ins.name, of.contents, 
+    app.value, comp.value, com.name, skill.lang 
+    FROM offer of
+    INNER JOIN instructor ins ON of.u_id = ins.id
+    INNER JOIN approval app ON of.app_id = app.id
+    INNER JOIN complete comp ON of.complete_id = comp.id
+    INNER JOIN company com ON of.c_id = com.id
+    INNER JOIN skill sk ON of.s_id = sk.id
+    WHERE c_id = :id;";
+    try{
+        $stm = $pdo->prepare($sql);
+        $stm->bindValue(':id',$ID,PDO::PARAM_INT);
+        $result = exeSQL($stm);
     return $result;
->>>>>>> 2138d115b49c2a2d165f6c745b852fba07aa4775
+    } catch (Exception $e) {
+        echo '<span class="error">SQLの構文にエラーがありました</span><br>';
+        echo $e->getMessage();
+        exit();
+    }
 }
 
 // 空き日程表示
-function displayVoid($ID){
-    $sql = "SELECT sche.str_date, sche.end_date FROM instructor ins 
-<<<<<<< HEAD
-    INNER JOIN schedule sche ON ins.id = sche.u_id
-WHERE sche.u_id = {$ID}";
-    exeSQL($sql);
-=======
-    INNER JOIN schedule sche ON ins.id = sche.u_id;";
-    $result = exeSQL($sql);
+function displayVoid($ID, $pdo){
+    $sql = "SELECT sche.str_date, sche.end_date FROM instructor ins
+    INNER JOIN schedule sche ON ins.id = sche.u_id 
+    WHERE sche.u_id = :id;";
+    try{
+        $stm = $pdo->prepare($sql);
+        $stm->bindValue(':id',$ID,PDO::PARAM_INT);
+        $result = exeSQL($stm);
     return $result;
->>>>>>> 2138d115b49c2a2d165f6c745b852fba07aa4775
+    } catch (Exception $e) {
+        echo '<span class="error">SQLの構文にエラーがありました</span><br>';
+        echo $e->getMessage();
+        exit();
+    }
 }
 
 ?>
