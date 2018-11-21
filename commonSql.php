@@ -39,18 +39,18 @@ function nameAndSkill($ID){
 function getAverage($ID){
     $sql = "SELECT avg(evalution.results) FROM instructor ins
     INNER JOIN evalution eva ON ins.id = eva.u_id
-    GROUP BY ins.id;";
+    GROUP BY ins.id WHERE ins.id = {$ID};";
     exeSQL($sql);
 }
 
 // 言語選択プルダウンリスト
-function getPullDownList($ID){
+function getPullDownList(){
     $sql = "SELECT id,lang FROM skill;";
     exeSQL($sql);
 }
 
 // 両マイページ　依頼表示
-function displayOffer($ID){
+function displayOffer_Ins($ID){
     $sql = "SELECT of.order_date, of.limit_date, ins.name, of.contents, 
     app.value, comp.value, com.name, skill.lang 
     FROM offer of
@@ -58,14 +58,30 @@ function displayOffer($ID){
     INNER JOIN approval app ON of.app_id = app.id
     INNER JOIN complete comp ON of.complete_id = comp.id
     INNER JOIN company com ON of.c_id = com.id
-    INNER JOIN skill sk ON of.s_id = sk.id;";
+    INNER JOIN skill sk ON of.s_id = sk.id
+    WHERE of.u_id = {$ID}";
+    exeSQL($sql);
+}
+
+// 両マイページ　依頼表示
+function displayOffer_Com($ID){
+    $sql = "SELECT of.order_date, of.limit_date, ins.name, of.contents, 
+    app.value, comp.value, com.name, skill.lang 
+    FROM offer of
+    INNER JOIN instructor ins ON of.u_id = ins.id
+    INNER JOIN approval app ON of.app_id = app.id
+    INNER JOIN complete comp ON of.complete_id = comp.id
+    INNER JOIN company com ON of.c_id = com.id
+    INNER JOIN skill sk ON of.s_id = sk.id
+    WHERE of.c_id = {$ID}";
     exeSQL($sql);
 }
 
 // 空き日程表示
 function displayVoid($ID){
     $sql = "SELECT sche.str_date, sche.end_date FROM instructor ins 
-    INNER JOIN schedule sche ON ins.id = sche.u_id;";
+    INNER JOIN schedule sche ON ins.id = sche.u_id
+WHERE sche.u_id = {$ID}";
     exeSQL($sql);
 }
 
