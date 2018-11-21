@@ -67,7 +67,7 @@ create table approval(
 )
 
 insert skill(lang) values('C++'),('C#'),('Java'),('PHP'),('Ruby'),('Python')
-,('Perl'),('VisualBsic'),('JavaScript'),('VB.NET'),('GO'),('Swift'),('Kotlin')
+,('Perl'),('VisualBasic'),('JavaScript'),('VB.NET'),('GO'),('Swift'),('Kotlin')
 ,('Objective C'),('LISP'),('Haskel'),('Prolog');
 
 insert complete(val) values
