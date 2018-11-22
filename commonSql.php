@@ -23,6 +23,7 @@ function exeSQL($insql){
     $stm = $pdo->prepare($sql);
     $stm->execute();
     $result = $stm->fetchAll(PDO::FETCH_ASSOC);
+    return $result;
 }
 
 // 名前、スキル（講師マイページ）
@@ -31,22 +32,24 @@ function nameAndSkill($ID){
     INNER JOIN (SELECT skill_user.u_id, skill.lang FROM skill_user s_u
     INNER JOIN skill skl ON s_u.s_id = skill.id) sk
     ON ins.id = sk.u_id WHERE ins.loginId = {$ID};";
-    exeSQL($sql);
+    $result = exeSQL($sql);
+    return $result;
 }
-
 
 // 平均評価（講師マイページ）
 function getAverage($ID){
     $sql = "SELECT avg(evalution.results) FROM instructor ins
     INNER JOIN evalution eva ON ins.id = eva.u_id
     GROUP BY ins.id;";
-    exeSQL($sql);
+    $result = exeSQL($sql);
+    return $result;
 }
 
 // 言語選択プルダウンリスト
 function getPullDownList($ID){
     $sql = "SELECT id,lang FROM skill;";
-    exeSQL($sql);
+    $result = exeSQL($sql);
+    return $result;
 }
 
 // 両マイページ　依頼表示
@@ -59,14 +62,16 @@ function displayOffer($ID){
     INNER JOIN complete comp ON of.complete_id = comp.id
     INNER JOIN company com ON of.c_id = com.id
     INNER JOIN skill sk ON of.s_id = sk.id;";
-    exeSQL($sql);
+    $result = exeSQL($sql);
+    return $result;
 }
 
 // 空き日程表示
 function displayVoid($ID){
     $sql = "SELECT sche.str_date, sche.end_date FROM instructor ins 
     INNER JOIN schedule sche ON ins.id = sche.u_id;";
-    exeSQL($sql);
+    $result = exeSQL($sql);
+    return $result;
 }
 
 ?>
