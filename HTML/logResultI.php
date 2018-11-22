@@ -20,16 +20,9 @@
         } else {
             $isError = true;
         }
-        $pdo = connectDB();
-        try{
-            $sql = "SELECT loginId FROM instructor;";
-            $stm = $pdo->prepare($sql);
-            $list['loginId'] = exeSQL($stm);
-        } catch (Exception $e) {
-            echo '<span class="error">SQLの実行でエラーがありました</span><br>';
-            echo $e->getMessage();
-            exit();
-        }
+        connectDB();
+        $sql = "SELECT loginId FROM instructor;";
+        $list['loginId'] = exeSQL($sql);
         $idflg = false;
         $psflg = false;
         foreach($list['loginId'] as $id){

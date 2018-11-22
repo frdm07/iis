@@ -1,5 +1,9 @@
 <?php
 require_once("../commonSql.php");
+session_start();
+$findId = $_SESSION["backId"];
+$_SESSION["com_id"] = $findId;
+$pdo = connectDB();
 ?>
 
 <!Doctype html>
@@ -23,12 +27,23 @@ require_once("../commonSql.php");
                     <th>連絡先</th>
                     <th>空きスケジュール</th>
                 </tr>
-                <tr>
-                    <td><a href="">a</a></td>
-                    <td>a</td>
-                    <td>a</td>
-                    <td>A~A</td>
-                </tr>
+                <?php
+                    if(isset($findId)){
+                        $findId = implode(",", $_POST["skill"]);
+                        $result = displayOffer_Com($findUser, $_POST["str_date"], $_POST["end_date"],$pdo);
+                        foreach($result as $view){
+                            echo "<form method = 'POST' action = 'myPageIns.php'>";
+                            echo "<tr>";
+                            echo "<td><input type='submit' value='{$view['nm']}'</td>
+                                <td>{$view['lang']}</td>
+                                <td>{$view['str_date']}</td>
+                                <td>{$view['end_date']}</td>";
+                            echo "<input type='hidden' name='findId' value={$view['id']}>";
+                            echo "</tr>";
+                            echo "</form>";
+                        }
+                    }
+                ?>
             </table>
         </div>
     </body>
