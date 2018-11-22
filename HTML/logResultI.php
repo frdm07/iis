@@ -48,20 +48,7 @@
                 }
                 if($_POST['inst_ps'] === $ps){
                     $psflag = true;
-                    $pdo = connectDB();
-                    try{
-                        $sql = "SELECT id, nm FROM instructor WHERE lognId = :id;";
-                        $stm = $pdo->prepare($sql);
-                        $stm->bindValue(':id',$id,PDO::PARAM_INT);
-                        $userInfo = exeSQL($stm);
-                    } catch (Exception $e) {
-                        echo '<span class="error">SQLの実行でエラーがありました</span><br>';
-                        echo $e->getMessage();
-                        exit();
-                    }
-                    $_SESSION['id'] = "{$userInfo['id']}";
-                    $_SESSION['user'] = "{$userInfo['nm']}";
-                    $_SESSION['loginType'] = "ins";
+                    $_SESSION['ins_id'] = $_POST['inst_id'];
                     break;
                 }
             }
@@ -75,15 +62,11 @@
         ?>
         <?php if($isError('true')): ?>
         <span class= "error">ログインIDとパスワードを正しく入力してください。</span>
-        <form method="POST" action="loginInst.html">
-            <input type="submit" value="ログインページに戻る">
-        </form>
+        <a href="loginInst.html">ログインページに戻る<a>
         <?php else: ?>
         <span>
             ログインが完了しました。
-            <form method="POST" action="myInst.html">
-                <input type="submit" value="マイページへ">
-            </form>
+            <a href="myInst.html">マイページへ<a>
         <?php endif; ?>
     </div>
 </body>

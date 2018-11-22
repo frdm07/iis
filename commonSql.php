@@ -1,10 +1,11 @@
 <?php
+function connectDB(){
 $user ='root';
 $password ='mariadb';
 $dbName ='test_db1';
 $host ='localhost:3306';
 $dsn ="mysql:host={$host};dbname={$dbName};charset=utf8";
-function connectDB(){
+
     try{
         $pdo = new PDO($dsn, $user, $password);
         $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
@@ -33,7 +34,7 @@ function exeSQL($stm){
 
 // 名前、スキル（講師マイページ）
 function nameAndSkill($ID, $pdo){
-    $sql = "SELECT ins.name, sk.lang FROM instructor ins
+    $sql = "SELECT ins.nm, sk.lang FROM instructor ins
     INNER JOIN (SELECT skill_user.u_id, skill.lang FROM skill_user s_u
     INNER JOIN skill skl ON s_u.s_id = skill.id) sk
     ON ins.id = sk.u_id WHERE ins.loginId = :id;";

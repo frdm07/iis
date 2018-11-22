@@ -7,14 +7,14 @@
     </head>
     <body>
         <h1>新規登録画面</h1>
-        <form method="POST" action="entry.html">
+        <form method="POST" action="entryIns.php">
         <table>
             <tr><td>名前</td><td>：<input type="text" name="name"></td></tr>
             <tr><td>電話</td><td>：<input type="text" name="tel"></td></tr>
             <tr><td>メールアドレス</td><td>：<input type="text" name="email"></td></tr>
             <tr><td>ID</td><td>：<input type="text" name="loginId"></td></tr>
             <tr><td>パスワード</td><td>：<input type="password" name="pass"></td></tr>
-            <tr><td><select name="skill1">
+            <tr><td>経験言語</td><td>：<select name="skill1">
                     <option value="">選択してください</option>
                     <option value="1">C++</option>
                     <option value="2">C#</option>
@@ -23,23 +23,19 @@
                     <option value="5">Ruby</option>
                     <option value="6">Python</option>
                     <option value="7">Perl</option>
-                    <option value="8"></option>
-                    <option value="9"></option>
-                    <option value="10"></option>
-                    <option value="11"></option>
-                    <option value="12"></option>
-                    <option value="13"></option>
-                    <option value="14"></option>
-                    <option value="15"></option>
-                    <option value="16"></option>
-                    <option value="17"></option>
-                    </select></td>
+                    <option value="8">VisualBasic</option>
+                    <option value="9">JavaScript</option>
+                    <option value="10">VB.NET</option>
+                    <option value="11">GO</option>
+                    <option value="12">Swift</option>
+                    <option value="13">Kotlin</option>
+                    <option value="14">Objective-C</option>
+                    <option value="15">LISP</option>
+                    <option value="16">Haskel</option>
+                    <option value="17">Prolog</option>
+                    </select></td></tr>
             <tr><td><input type="submit" value="登録する" class="regiButton"></td></tr>      
         </table>
         </form>
     </body>
 </html>
-
-insert skill(lang) values('C++'),('C#'),('Java'),('PHP'),('Ruby'),('Python')
-,('Perl'),('VisualBsic'),('JavaScript'),('VB.NET'),('GO'),('Swift'),('Kotlin')
-,('Objective C'),('LISP'),('Haskel'),('Prolog');

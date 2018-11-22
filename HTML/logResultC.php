@@ -24,8 +24,7 @@
         try{
             $sql = "SELECT loginId, ps FROM company;";
             $stm = $pdo->prepare($sql);
-            $stm->bindValue(':id',$ID,PDO::PARAM_INT);
-            $list = exeSQL($stm);
+            $list['loginId'] = exeSQL($stm);
         } catch (Exception $e) {
             echo '<span class="error">SQLの実行でエラーがありました</span><br>';
             echo $e->getMessage();
@@ -39,11 +38,7 @@
                 foreach($list['ps'] as $ps){
                     if($_POST['com_ps'] === $ps){
                         $psflag = true;
-                        $sql = "SELECT id, nm FROM company WHERE lognId = {$id};";
-                        $userInfo = exeSQL($sql);
-                        $_SESSION['id'] = "{$userInfo['id']}";
-                        $_SESSION['name'] = "{$userInfo['nm']}";
-                        $_SESSION['loginType'] = "com";
+                        $_SESSION["com_id"] = $_POST["com_id"];
                     }
                 }
             }
@@ -57,15 +52,11 @@
         ?>
         <?php if($isError('true')): ?>
         <span class= "error">ログインIDとパスワードを正しく入力してください。</span>
-        <form method="POST" action="loginCom.html">
-            <input type="submit" value="ログインページに戻る">
-        </form>
+        <a href="loginCom.html">ログインページに戻る<a>
         <?php else: ?>
         <span>
             ログインが完了しました。
-            <form method="POST" action="myCompany.html">
-                <input type="submit" value="マイページへ">
-            </form>
+            <a href="myCompany.html">マイページへ<a>
         <?php endif; ?>
     </div>
 </body>
