@@ -1,6 +1,6 @@
 <?php
     session_start();
-    require_once("../iis/commonSql.php");
+    require_once("../commonSql.php");
 ?>
 <!DOCTYPE html>
 <html>

@@ -1,3 +1,7 @@
+<?php
+    session_start();
+    require_once("../commonSql.php");
+?>
 <!DOCTYPE html>
 <html lang="ja">
     <head>
