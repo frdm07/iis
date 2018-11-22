@@ -1,4 +1,5 @@
 <?php
+$date = date("Y/m/d");
 function connectDB(){
     $user ='root';
     $password ='mariadb';
@@ -82,6 +83,7 @@ function getPullDownList($pdo){
 
 // 講師マイページ　依頼表示
 function displayOffer_Ins($ID, $pdo){
+
     $sql = "SELECT of.id, of.limit_date, ins.nm as insNm, of.contents, 
     app.val, com.nm as comNm, skill.lang, com.tel
     FROM offer of
@@ -91,10 +93,12 @@ function displayOffer_Ins($ID, $pdo){
     INNER JOIN skill sk ON of.s_id = sk.id
     WHERE ins.loginId = :id
     AND of.complete_id = 2
-    AND of.app_id = 1"; 
+    AND of.app_id = 1
+    AND of.limit_date >= :lim"; 
     try{
         $stm = $pdo->prepare($sql);
         $stm->bindValue(':id',$ID,PDO::PARAM_INT);
+        $stm->bindValue(':lim',$date,PDO::PARAM_DATE);
         $result = exeSQL($stm);
         return $result;
     } catch (Exception $e) {
@@ -113,10 +117,12 @@ function displayOffer_Com($ID, $pdo){
     INNER JOIN approval app ON of.app_id = app.id
     INNER JOIN complete comp ON of.complete_id = comp.id
     INNER JOIN company com ON of.c_id = com.id
-    WHERE com.loginId = :id";
+    WHERE com.loginId = :id
+    AND of.limit_date >= :lim";
     try{
         $stm = $pdo->prepare($sql);
         $stm->bindValue(':id',$ID,PDO::PARAM_INT);
+        $stm->bindValue(':lim',$date,PDO::PARAM_DATE);
         $result = exeSQL($stm);
     return $result;
     } catch (Exception $e) {
@@ -151,8 +157,8 @@ function findUser($skillId, $str, $end, $pdo){
             INNER JOIN schedule sch ON ins.id = sch.u_id
             INNER JOIN skill sk ON sk.id = sk_u.s_id
             WHERE sk_u.s_id IN(:id)
-            AND sch.str_date >= :str_date
-            AND sch.end_date <= :end_date
+            AND sch.str_date <= :str_date
+            AND sch.end_date >= :end_date
             GROUP BY ins.id";
     try{
         $stm = $pdo->prepare($sql);
