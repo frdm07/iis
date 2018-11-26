@@ -115,7 +115,25 @@ ALTER TABLE offer MODIFY c_id int NOT NULL;
 ALTER TABLE evalution MODIFY u_id int NOT NULL;
 ALTER TABLE evalution MODIFY c_id int NOT NULL;
 
+ALTER TABLE instructor MODIFY loginId int NOT NULL;
+ALTER TABLE instructor MODIFY ps int NOT NULL;
+ALTER TABLE company MODIFY loginId int NOT NULL;
+ALTER TABLE company MODIFY ps int NOT NULL;
 
 
+insert instructor(loginId,ps) values ("ksks","ksks");
+insert skill_user(id,u_id,s_id) values (1,1,1),(2,1,2),(3,1,3);
+select ins.loginId,sk.lang
+from instructor ins
+inner join skill_user sk_u on ins.id = sk_u.u_id
+inner join skill sk on sk_u.s_id = sk.id;
+delete from skill_user where skill_user.id=4;
+
+select ins.nm,sk.lang
+from instructor ins
+inner join skill_user sk_u on ins.id = sk_u.u_id
+inner join skill sk on sk_u.s_id = sk.id;
+
+UPDATE approval SET val='承認' where id = 2;
 
 

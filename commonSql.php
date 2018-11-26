@@ -33,10 +33,9 @@ function exeSQL($stm){
 
 // 名前、スキル（講師マイページ）
 function nameAndSkill($ID, $pdo){
-    $sql = "SELECT ins.name, sk.lang FROM instructor ins
-    INNER JOIN (SELECT skill_user.u_id, skill.lang FROM skill_user s_u
-    INNER JOIN skill skl ON s_u.s_id = skill.id) sk
-    ON ins.id = sk.u_id WHERE ins.loginId = :id;";
+    $sql = "SELECT ins.nm, sk.lang FROM instructor ins
+    INNER JOIN skill_user sk_u ON ins.id = sk_u.u_id
+    INNER JOIN skill sk ON sk.id = sk.s_id WHERE ins.loginId = :id";
     try{
         $stm = $pdo->prepare($sql);
         $stm->bindValue(':id',$ID,PDO::PARAM_INT);
@@ -51,10 +50,10 @@ function nameAndSkill($ID, $pdo){
 
 // 平均評価（講師マイページ）
 function getAverage($ID, $pdo){
-    $sql = "SELECT avg(evalution.results) FROM instructor ins
+    $sql = "SELECT avg(evalution.results) as evaAvg FROM instructor ins
     INNER JOIN evalution eva ON ins.id = eva.u_id
-    WHERE eva.u_id = :id
-    GROUP BY ins.id;";
+    WHERE ins.loginId = :id
+    GROUP BY eva.u_id";
     try{
         $stm = $pdo->prepare($sql);
         $stm->bindValue(':id',$ID,PDO::PARAM_INT);
@@ -69,7 +68,7 @@ function getAverage($ID, $pdo){
 
 // 言語選択プルダウンリスト
 function getPullDownList($pdo){
-    $sql = "SELECT id,lang FROM skill;";
+    $sql = "SELECT id,lang FROM skill";
     try{
         $stm = $pdo->prepare($sql);
         $result = exeSQL($stm);
@@ -83,15 +82,16 @@ function getPullDownList($pdo){
 
 // 講師マイページ　依頼表示
 function displayOffer_Ins($ID, $pdo){
-    $sql = "SELECT of.order_date, of.limit_date, ins.name, of.contents, 
-    app.value, comp.value, com.name, skill.lang 
+    $sql = "SELECT of.id, of.limit_date, ins.nm as insNm, of.contents, 
+    app.val, com.nm as comNm, skill.lang, com.tel
     FROM offer of
     INNER JOIN instructor ins ON of.u_id = ins.id
     INNER JOIN approval app ON of.app_id = app.id
-    INNER JOIN complete comp ON of.complete_id = comp.id
     INNER JOIN company com ON of.c_id = com.id
     INNER JOIN skill sk ON of.s_id = sk.id
-    WHERE u_id = :id;"; 
+    WHERE ins.loginId = :id
+    AND of.complete_id = 2
+    AND of.app_id = 1"; 
     try{
         $stm = $pdo->prepare($sql);
         $stm->bindValue(':id',$ID,PDO::PARAM_INT);
@@ -106,15 +106,15 @@ function displayOffer_Ins($ID, $pdo){
 
 // 企業マイページ　依頼表示
 function displayOffer_Com($ID, $pdo){
-    $sql = "SELECT of.order_date, of.limit_date, ins.name, of.contents, 
-    app.value, comp.value, com.name, skill.lang 
+    $sql = "SELECT of.order_date, of.limit_date, ins.nm, of.contents, 
+    app.value, comp.value, com.nm, skill.lang 
     FROM offer of
     INNER JOIN instructor ins ON of.u_id = ins.id
     INNER JOIN approval app ON of.app_id = app.id
     INNER JOIN complete comp ON of.complete_id = comp.id
     INNER JOIN company com ON of.c_id = com.id
     INNER JOIN skill sk ON of.s_id = sk.id
-    WHERE c_id = :id;";
+    WHERE com.loginId = :id";
     try{
         $stm = $pdo->prepare($sql);
         $stm->bindValue(':id',$ID,PDO::PARAM_INT);
@@ -131,7 +131,7 @@ function displayOffer_Com($ID, $pdo){
 function displayVoid($ID, $pdo){
     $sql = "SELECT sche.str_date, sche.end_date FROM instructor ins
     INNER JOIN schedule sche ON ins.id = sche.u_id 
-    WHERE sche.u_id = :id;";
+    WHERE ins.loginId = :id";
     try{
         $stm = $pdo->prepare($sql);
         $stm->bindValue(':id',$ID,PDO::PARAM_INT);

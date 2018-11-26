@@ -1,18 +1,11 @@
 <?php
-<<<<<<< HEAD
-require_once("commonSql.php");
+require_once("../commonSql.php");
 session_start();
+$pdo = connectDB();
+$logid = $_SESSION["id"];
+$_SESSION["backId"] = $logid;
 ?>
 <!Doctype html>
-=======
-    require_once("../commonSql.php");
-    session_start();
-?>
-<?php
-    $list = nameAndSkill($_SESSION['id']);
-?>
-<!DOCTYPE html>
->>>>>>> 7ea5f6df4cd40f56059ac8258497aeda5a17be49
 <html>
     <head>
         <meta charset="utf-8">
@@ -21,94 +14,83 @@ session_start();
     </head>
     <body>
         <header>
-            <a href="">ログアウト</a>
+            <a href="top.html">ログアウト</a>
             <h3>マイページ</h3>
         </header>
-<<<<<<< HEAD
         <table border="3">
             <tr>
                 <td>
                     <table class="pro" border="2">
                         <tr>
                             <td>氏名：</td>
-                            <td>---------</td>
-                        </tr>
-                        <tr>
-                            <td>スキル（言語）：</td>
-                            <td>----------</td>
+                            <?php
+                                if(isset($logid)){
+                                    $result = nameAndSkill($logid,$pdo);
+                                    echo "<td>{$result[0]['nm']}</td>";
+                                    echo "</tr><tr><td>スキル（言語）：</td>";
+                                    echo "<td>";
+                                    foreach($result as $view){
+                                        echo "{$view['lang']} ";
+                                    }
+                                    echo "</td>";
+                                }
+                            ?>
                         </tr>
                     </table>
                 </td>
                 <td>
                     <table>
                         <tr>
-                            <td>評価<br><h3>3.65</h3></td>
+                            <td>
+                                評価<br>
+                                <?php
+                                if(isset($logid)){
+                                    $result = getAverage($logId,$pdo);
+                                    echo "<h3>{$result[0]['evaAvg']} 点</h3>";
+                                }
+                                ?>
+                            </td>
                         </tr>
                     </table>
                 </td>
             </tr>
         </table>
         <br>
-        <div>
-            <h2>依頼状況</h2>
-            <table border="1">
-                <tr>
-                    <th>依頼元（氏名）</th>
-                    <th>要求スキル</th>
-                    <th>連絡先</th>
-                    <th>メモ</th>
-                    <th>承認/非承認</th>
-                </tr>
-            </table>
-        </div>
+        
+            <div>
+                <h2>依頼状況</h2>
+                <table border="1">
+                    <tr>
+                        <th>依頼元（氏名）</th>
+                        <th>要求スキル</th>
+                        <th>連絡先</th>
+                        <th>メモ</th>
+                        <th>有効期限</th>
+                        <th>承認/非承認</th>
+                        <th>確定ボタン</th>
+                    </tr>
+                    <?php
+                        if(isset($logid)){
+                            $result = displayOffer_Ins($logid,$pdo);
+                            foreach($result as $view){
+                                echo "<form method = 'POST' action = 'shonin.html'>";
+                                echo "<tr>";
+                                echo "<td>{$view['comNm']}</td>
+                                    <td>{$view['lang']}</td>
+                                    <td>{$view['tel']}</td>
+                                    <td>{$view['contents']}</td>
+                                    <td>{$view['limit_date']}</td>
+                                    <td><input type='radio' name='approval' value='2' checked='checked'>承認/
+                                    <input type='radio' name='approval' value='3'>拒否</td>";
+                                echo "<input type='hidden' name='findId' value={$view['id']}>";
+                                echo "<td><input type='submit' value='確定'></td>";
+                                echo "</tr>";
+                                echo "</form>";
+                            }
+                        }
+                    ?>
+                </table>
+            </div>
         <a href="schedule.php">スケジュール入力画面へ</a>
-=======
-        <?php
-        echo "<table border='3'><tr>
-                <td><table class='pro' border='2'>
-                        <tr>
-                            <td>氏名：</td>
-                            <td>{$list['name']}</td>
-                        </tr>
-                        <tr>
-                            <td>スキル（言語）：</td>";
-        foreach($list['name'] as $skill){
-            echo "<td>{$skill}</td>";
-        }              
-        echo            "</tr>
-                    </table></td>
-                <td><table>
-                        <tr>
-                            <td>評価<br><h3>";
-        $Vavg = getAverage($_SESSION['id']);                   
-        echo "{$Vavg}</h3></td>
-                        </tr>
-                    </table></td>
-            </tr>
-        </table>
-        <br>
-        <div>";
-        echo "<h2>依頼状況</h2>
-            <table border='1'>
-            <thead><tr>
-                <th>依頼元（会社名）</th>
-                <th>要求スキル</th>
-                <th>連絡先</th>
-                <th>メモ</th>
-                <th>承認/非承認</th>
-            </tr></thead>";
-        echo "<tbody>";
-        foreach (displayOffer_Ins($ID) as $row){
-            echo "<tr><td>{}</td>";
-            echo "<td>{}</td>";
-            echo "<td>{}</td>";
-            echo "<td>{}</td>";
-            echo "<td>{}</td></tr>";
-        }
-            </table>
-        </div>
-        <a href="schedule.html">スケジュール入力画面へ</a>
-        ?>
->>>>>>> 7ea5f6df4cd40f56059ac8258497aeda5a17be49
     </body>
 </html>
