@@ -101,3 +101,21 @@ ALTER TABLE offer ADD FOREIGN KEY(app_id) REFERENCES approval(id);
 ALTER TABLE offer ADD FOREIGN KEY(complete_id) REFERENCES complete(id);
 ALTER TABLE evalution ADD FOREIGN KEY(u_id) REFERENCES instructor(id);
 ALTER TABLE evalution ADD FOREIGN KEY(c_id) REFERENCES company(id);
+
+ALTER TABLE テーブル名 ALTER COLUMN カラム名 DROP NOT NULL;
+
+ALTER TABLE schedule MODIFY u_id int not null;
+ALTER TABLE skill_user MODIFY u_id int NOT NULL;
+ALTER TABLE skill_user MODIFY s_id int NOT NULL;
+ALTER TABLE offer MODIFY u_id int NOT NULL;
+ALTER TABLE offer MODIFY s_id int NOT NULL;
+ALTER TABLE offer MODIFY app_id int NOT NULL;
+ALTER TABLE offer MODIFY complete_id int NOT NULL;
+ALTER TABLE offer MODIFY c_id int NOT NULL;
+ALTER TABLE evalution MODIFY u_id int NOT NULL;
+ALTER TABLE evalution MODIFY c_id int NOT NULL;
+
+
+
+
+

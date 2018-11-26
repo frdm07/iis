@@ -1,0 +1,35 @@
+<?php
+require_once("../commonSql.php");
+?>
+
+<!Doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="../CSS/findUser.css">
+        <title>講師検索結果</title>
+    </head>
+    <body>
+        <header>
+            <h3>
+                講師検索結果
+            </h3>
+        </header>
+        <div>
+            <table border="1">
+                <tr>
+                    <th>氏名</th>
+                    <th>スキル(言語)</th>
+                    <th>連絡先</th>
+                    <th>空きスケジュール</th>
+                </tr>
+                <tr>
+                    <td><a href="">a</a></td>
+                    <td>a</td>
+                    <td>a</td>
+                    <td>A~A</td>
+                </tr>
+            </table>
+        </div>
+    </body>
+</html>
