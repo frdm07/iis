@@ -18,9 +18,9 @@ function connectDB(){
 }
 
 //SQL実行
-function exeSQL($insql){
-    $sql = $insql;
-    $stm = $pdo->prepare($sql);
+function exeSQL($stm){
+//    $sql = $insql;
+//    $stm = $pdo->prepare($sql);
     $stm->execute();
     $result = $stm->fetchAll(PDO::FETCH_ASSOC);
     return $result;
@@ -31,8 +31,10 @@ function nameAndSkill($ID){
     $sql = "SELECT ins.name, sk.lang FROM instructor ins
     INNER JOIN (SELECT skill_user.u_id, skill.lang FROM skill_user s_u
     INNER JOIN skill skl ON s_u.s_id = skill.id) sk
-    ON ins.id = sk.u_id WHERE ins.loginId = {$ID};";
-    $result = exeSQL($sql);
+    ON ins.id = sk.u_id WHERE ins.loginId = :id;";
+    $stm = $pdo->prepare($sql);
+    $stm->bindValue(':id',$ID,PDO::PARAM_INT);
+    $result = exeSQL($stm);
     return $result;
 }
 
@@ -40,8 +42,11 @@ function nameAndSkill($ID){
 function getAverage($ID){
     $sql = "SELECT avg(evalution.results) FROM instructor ins
     INNER JOIN evalution eva ON ins.id = eva.u_id
+    WHERE eva.u_id = :id
     GROUP BY ins.id;";
-    $result = exeSQL($sql);
+    $stm = $pdo->prepare($sql);
+    $stm->bindValue(':id',$ID,PDO::PARAM_INT);
+    $result = exeSQL($stm);
     return $result;
 }
 
