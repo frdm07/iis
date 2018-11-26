@@ -2,7 +2,7 @@
 require_once("../commonSql.php");
 session_start();
 $pdo = connectDB();
-$logid = $_SESSION["id"];
+$logid = $_SESSION["ins_id"];
 $_SESSION["backId"] = $logid;
 ?>
 <!Doctype html>

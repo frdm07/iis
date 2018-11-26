@@ -1,7 +1,7 @@
 <?php
 require_once("../commonSql.php");
 $pdo = connectDB();
-$_SESSION["id"] = $_SESSION["backId"];
+$_SESSION["ins_id"] = $_SESSION["backId"];
 ?>
 <!DOCTYPE html>
 <html>
