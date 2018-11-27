@@ -1,7 +1,3 @@
-<?php
-    session_start();
-    require_once("../iis/commonSql.php");
-?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,17 +16,10 @@
         } else {
             $isError = true;
         }
-        $pdo = connectDB();
-        try{
-            $sql = "SELECT loginId, ps FROM company;";
-            $stm = $pdo->prepare($sql);
-            $stm->bindValue(':id',$ID,PDO::PARAM_INT);
-            $list = exeSQL($stm);
-        } catch (Exception $e) {
-            echo '<span class="error">SQLの実行でエラーがありました</span><br>';
-            echo $e->getMessage();
-            exit();
-        }
+        require_once("../iis/commonSql.php");
+        connectDB();
+        $sql = "SELECT loginId, ps FROM company;";
+        $list = exeSQL($sql);
         $idflg = false;
         $psflg = false;
         foreach($list['loginId'] as $id){
@@ -39,6 +28,7 @@
                 foreach($list['ps'] as $ps){
                     if($_POST['com_ps'] === $ps){
                         $psflag = true;
+                        session_start();
                         $sql = "SELECT id, nm FROM company WHERE lognId = {$id};";
                         $userInfo = exeSQL($sql);
                         $_SESSION['id'] = "{$userInfo['id']}";

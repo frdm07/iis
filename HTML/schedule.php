@@ -1,6 +1,7 @@
 <?php
 session_start();
-$_SESSION["id"] = $_SESSION["id"];
+$logId = $_SESSION["backId"];
+$_SESSION["id"] = $logId;
 $gobackURL = "myInst.php";
 ?>
 <!Doctype html>

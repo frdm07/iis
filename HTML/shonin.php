@@ -1,7 +1,8 @@
 <?php
 require_once("../commonSql.php");
 $pdo = connectDB();
-$_SESSION["ins_id"] = $_SESSION["backId"];
+$logId = $_SESSION["backId"];
+$_SESSION["ins_id"] = $logId;
 ?>
 <!DOCTYPE html>
 <html>
@@ -17,8 +18,8 @@ $_SESSION["ins_id"] = $_SESSION["backId"];
     try{
         $sql = "UPDATE offer SET app.id = :id where id = :findId";
         $stm = $pdo->prepare($sql);
-        $stm->bindValue(':id', $_POST["approval"], PDO::PARAM_DATE);
-        $stm->bindValue(':findId', $_POST["findId"], PDO::PARAM_DATE);
+        $stm->bindValue(':id', $_POST["approval"], PDO::PARAM_INT);
+        $stm->bindValue(':findId', $_POST["findId"], PDO::PARAM_INT);
         $stm->execute();
         $pdo = NULL;
     }catch (Exception $e){

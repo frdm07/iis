@@ -52,7 +52,6 @@ create table offer(
     ,u_id int
     ,s_id int
     ,contents varchar(100)
-    ,sta varchar(50)
     ,str_date date
     ,end_date date
     ,order_date date
@@ -134,6 +133,14 @@ from instructor ins
 inner join skill_user sk_u on ins.id = sk_u.u_id
 inner join skill sk on sk_u.s_id = sk.id;
 
-UPDATE approval SET val='承認' where id = 2;
+UPDATE offer SET app.id=:id where id = :findId
 
-
+SELECT ins.nm, sk.lang, sch.str_date, sch.end_date
+FROM instructor ins
+INNER JOIN skill_user sk_u ON ins.id = sk_u.u_id
+INNER JOIN schedule sch ON ins.id = sch.u_id
+INNER JOIN skill sk ON sk.id = sk_u.s_id
+WHERE sk_u.s_id IN(:id)
+AND sch.str_date >= :str_date
+AND sch.end_date <= :end_date
+GROUP BY ins.id

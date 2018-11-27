@@ -3,6 +3,9 @@ require_once("../commonSql.php");
 session_start();
 $gotoMypage = "myInst.php";
 $gotoInsert = "schedule.php";
+$logId = $_SESSION["id"];
+$_SESSION["ins_id"] = $logId;
+$_SESSION["backId"] = $logId;
 ?>
 
 <?php
@@ -14,21 +17,19 @@ if(isset($_SESSION["id"])){
         if(isset($_POST["str_date1"]) || isset($_POST["end_date1"])){
             $stm->bindValue(':str_date', $_POST["str_date1"], PDO::PARAM_DATE);
             $stm->bindValue(':end_date', $_POST["end_date1"], PDO::PARAM_DATE);
-            $stm->bindValue(':u_id', $_SESSION["id"], PDO::PARAM_DATE);
-            $stm->execute();
+            $stm->bindValue(':u_id', $_SESSION["id"], PDO::PARAM_INT);
         }
         if(isset($_POST["str_date2"]) || isset($_POST["end_date2"])){
             $stm->bindValue(':str_date', $_POST["str_date2"], PDO::PARAM_DATE);
             $stm->bindValue(':end_date', $_POST["end_date2"], PDO::PARAM_DATE);
-            $stm->bindValue(':u_id', $_SESSION["id"], PDO::PARAM_DATE);
-            $stm->execute();
+            $stm->bindValue(':u_id', $_SESSION["id"], PDO::PARAM_INT);
         }
         if(isset($_POST["str_date3"]) || isset($_POST["end_date3"])){
             $stm->bindValue(':str_date', $_POST["str_date1"], PDO::PARAM_DATE);
             $stm->bindValue(':end_date', $_POST["end_date1"], PDO::PARAM_DATE);
-            $stm->bindValue(':u_id', $_SESSION["id"], PDO::PARAM_DATE);
-            $stm->execute();
+            $stm->bindValue(':u_id', $_SESSION["id"], PDO::PARAM_INT);
         }
+        $stm->execute();
         echo "新規の空スケジューウを登録しました。";
         $pdo = NULL;
     }catch (Exception $e){

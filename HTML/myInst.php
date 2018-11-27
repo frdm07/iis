@@ -73,7 +73,7 @@ $_SESSION["backId"] = $logid;
                         if(isset($logid)){
                             $result = displayOffer_Ins($logid,$pdo);
                             foreach($result as $view){
-                                echo "<form method = 'POST' action = 'shonin.html'>";
+                                echo "<form method = 'POST' action = 'shonin.php'>";
                                 echo "<tr>";
                                 echo "<td>{$view['comNm']}</td>
                                     <td>{$view['lang']}</td>
@@ -87,9 +87,13 @@ $_SESSION["backId"] = $logid;
                                 echo "</tr>";
                                 echo "</form>";
                             }
+                            echo "<form method='POST' action='InputSkill.php'>";
+                            echo "<h3><input type='submit' vaklue='スキル入力画面へ'></h3>";
+                            echo "<input type='hidden' name='findId' value={$view['id']}>";
                         }
                     ?>
                 </table>
+                </form>
             </div>
         <a href="schedule.php">スケジュール入力画面へ</a>
     </body>
