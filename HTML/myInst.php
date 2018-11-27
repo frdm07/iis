@@ -66,26 +66,30 @@ $_SESSION["backId"] = $logid;
                         <th>連絡先</th>
                         <th>メモ</th>
                         <th>有効期限</th>
-                        <th>承認/非承認</th>
+                        <th>承認/未承認</th>
                         <th>確定ボタン</th>
                     </tr>
                     <?php
                         if(isset($logid)){
                             $result = displayOffer_Ins($logid,$pdo);
-                            foreach($result as $view){
-                                echo "<form method = 'POST' action = 'shonin.php'>";
-                                echo "<tr>";
-                                echo "<td>{$view['comNm']}</td>
-                                    <td>{$view['lang']}</td>
-                                    <td>{$view['tel']}</td>
-                                    <td>{$view['contents']}</td>
-                                    <td>{$view['limit_date']}</td>
-                                    <td><input type='radio' name='approval' value='2' checked='checked'>承認/
-                                    <input type='radio' name='approval' value='3'>拒否</td>";
-                                echo "<input type='hidden' name='findId' value={$view['id']}>";
-                                echo "<td><input type='submit' value='確定'></td>";
-                                echo "</tr>";
-                                echo "</form>";
+                            if($result == null){
+                                    echo "<tr><td colspan='7'>現在オファーはありません。<td></tr>";
+                                }else{
+                                foreach($result as $view){
+                                    echo "<form method = 'POST' action = 'shonin.php'>";
+                                    echo "<tr>";
+                                    echo "<td>{$view['comNm']}</td>
+                                        <td>{$view['lang']}</td>
+                                        <td>{$view['tel']}</td>
+                                        <td>{$view['contents']}</td>
+                                        <td>{$view['limit_date']}</td>
+                                        <td><input type='radio' name='approval' value='2' checked='checked'>承認/
+                                        <input type='radio' name='approval' value='3'>拒否</td>";
+                                    echo "<input type='hidden' name='findId' value={$view['id']}>";
+                                    echo "<td><input type='submit' value='確定'></td>";
+                                    echo "</tr>";
+                                    echo "</form>";
+                                }
                             }
                             echo "<form method='POST' action='InputSkill.php'>";
                             echo "<h3><input type='submit' vaklue='スキル入力画面へ'></h3>";
