@@ -33,20 +33,24 @@ $_SESSION["backId"] = $logid;
                     <?php
                         if(isset($logid)){
                             $result = displayOffer_Com($logid,$pdo);
-                            foreach($result as $view){
-                                echo "<form method = 'POST' action = 'myPageIns.php'>";
-                                echo "<tr>";
-                                echo "<td>{$view['order_date']}</td>
-                                    <td>{$view['limit_date']}</td>
-                                    <td><input type='submit' value='{$view['insNm']}'</td>
-                                    <td>{$view['tel']}</td>
-                                    <td>{$view['contents']}</td>
-                                    <td>{$view['appVal']}</td>
-                                    <td>{$view['compVal']}</td>";
-                                echo "<input type='hidden' name='c_id' value={$view['c_id']}>";
-                                echo "<input type='hidden' name='u_id' value={$view['u_id']}>";
-                                echo "</tr>";
-                                echo "</form>";
+                            if(!isset($result)){
+                                echo "<tr><td colspan='7'>現在オファーはありません。<td></tr>";
+                            }else{
+                                foreach($result as $view){
+                                    echo "<form method = 'POST' action = 'myPageIns.php'>";
+                                    echo "<tr>";
+                                    echo "<td>{$view['order_date']}</td>
+                                        <td>{$view['limit_date']}</td>
+                                        <td><input type='submit' value='{$view['insNm']}'</td>
+                                        <td>{$view['tel']}</td>
+                                        <td>{$view['contents']}</td>
+                                        <td>{$view['appVal']}</td>
+                                        <td>{$view['compVal']}</td>";
+                                    echo "<input type='hidden' name='c_id' value={$view['c_id']}>";
+                                    echo "<input type='hidden' name='u_id' value={$view['u_id']}>";
+                                    echo "</tr>";
+                                    echo "</form>";
+                                }
                             }
                         }
                     ?>
